@@ -48,11 +48,11 @@ class StoreRoleRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => __('messages.role_name_required'),
-            'name.unique' => __('messages.role_name_unique'),
-            'name.regex' => __('messages.role_name_format'),
-            'permissions.array' => __('messages.permissions_array'),
-            'permissions.*.exists' => __('messages.permissions_invalid'),
+            'name.required' => "The role name is required.",
+            'name.unique' => "The role name must be unique.",
+            'name.regex' => "The role name must contain only lowercase letters, numbers, hyphens, and underscores.",
+            'permissions.array' => "The permissions must be an array.",
+            'permissions.*.exists' => "The permission must exist.",
         ];
     }
 }

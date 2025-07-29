@@ -77,11 +77,11 @@ class RoleController extends Controller implements HasMiddleware
             }
 
             return redirect()->route('roles.index')
-                ->with('success', __('messages.role_created'));
+                ->with('success', 'Role created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', __('messages.role_create_failed'));
+                ->with('error', 'Failed to create role. Please try again.');
         }
     }
 
@@ -126,11 +126,11 @@ class RoleController extends Controller implements HasMiddleware
             }
 
             return redirect()->route('roles.index')
-                ->with('success', __('messages.role_updated'));
+                ->with('success', 'Role updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', __('messages.role_update_failed'));
+                ->with('error', 'Failed to update role. Please try again.');
         }
     }
 
@@ -143,16 +143,16 @@ class RoleController extends Controller implements HasMiddleware
             // Prevent deletion of default roles
             if (in_array($role->name, ['admin', 'user'])) {
                 return redirect()->back()
-                    ->with('error', __('messages.cannot_delete_system_role'));
+                    ->with('error', 'Cannot delete system roles.');
             }
 
             $role->delete();
 
             return redirect()->route('roles.index')
-                ->with('success', __('messages.role_deleted'));
+                ->with('success', 'Role deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', __('messages.role_delete_failed'));
+                ->with('error', 'Failed to delete role. Please try again.');
         }
     }
 }

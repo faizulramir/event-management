@@ -41,9 +41,9 @@ class StorePermissionRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => __('messages.permission_name_required'),
-            'name.unique' => __('messages.permission_name_unique'),
-            'name.regex' => __('messages.permission_name_format'),
+            'name.required' => "The permission name is required.",
+            'name.unique' => "The permission name must be unique.",
+            'name.regex' => "The permission name must contain only lowercase letters, numbers, hyphens, underscores, and dots.",
         ];
     }
 }

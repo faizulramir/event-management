@@ -64,11 +64,11 @@ class PermissionController extends Controller implements HasMiddleware
             ]);
 
             return redirect()->route('permissions.index')
-                ->with('success', __('messages.permission_created'));
+                ->with('success', 'Permission created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', __('messages.permission_create_failed'));
+                ->with('error', 'Failed to create permission. Please try again.');
         }
     }
 
@@ -103,11 +103,11 @@ class PermissionController extends Controller implements HasMiddleware
             ]);
 
             return redirect()->route('permissions.index')
-                ->with('success', __('messages.permission_updated'));
+                ->with('success', 'Permission updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', __('messages.permission_update_failed'));
+                ->with('error', 'Failed to update permission. Please try again.');
         }
     }
 
@@ -120,10 +120,10 @@ class PermissionController extends Controller implements HasMiddleware
             $permission->delete();
 
             return redirect()->route('permissions.index')
-                ->with('success', __('messages.permission_deleted'));
+                ->with('success', 'Permission deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', __('messages.permission_delete_failed'));
+                ->with('error', 'Failed to delete permission. Please try again.');
         }
     }
 }
