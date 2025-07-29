@@ -57,14 +57,4 @@ class User extends Authenticatable
     {
         return 'uuid';
     }
-
-    /**
-     * Get the role of the user.
-     *
-     * @return \Spatie\Permission\Models\Role|null
-     */
-    public function role()
-    {
-        return $this->roles()->orderBy('id')->limit(1)->first();
-    }
 }
