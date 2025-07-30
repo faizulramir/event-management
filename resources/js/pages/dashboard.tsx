@@ -1,7 +1,29 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import React from 'react';
 import { Head } from '@inertiajs/react';
+import { Calendar, Users, CalendarDays } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
+import StatsCard from '@/components/ui/stats-card';
+import EventsChart from '@/components/ui/events-chart';
+import { type BreadcrumbItem } from '@/types';
+
+interface DashboardStats {
+    totalEvents: number;
+    totalUsers: number;
+    upcomingEvents: number;
+}
+
+interface ChartDataPoint {
+    date: string;
+    count: number;
+    formattedDate: string;
+}
+
+interface DashboardProps {
+    stats: DashboardStats;
+    chartData: ChartDataPoint[];
+    statusOptions: Record<string, string>;
+    currentStatusFilter?: string;
+}
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -10,24 +32,45 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Dashboard() {
+export default function Dashboard({ 
+    stats, 
+    chartData, 
+    statusOptions, 
+    currentStatusFilter 
+}: DashboardProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-6">
+                {/* Stats Cards */}
+                <div className="grid gap-4 md:grid-cols-3">
+                    <StatsCard
+                        title="Total Events"
+                        value={stats.totalEvents}
+                        icon={Calendar}
+                        description="All events in the system"
+                    />
+                    <StatsCard
+                        title="Total Users"
+                        value={stats.totalUsers}
+                        icon={Users}
+                        description="Registered users"
+                    />
+                    <StatsCard
+                        title="Upcoming Events"
+                        value={stats.upcomingEvents}
+                        icon={CalendarDays}
+                        description="Events scheduled for the future"
+                    />
                 </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                {/* Events Chart */}
+                <div className="flex-1">
+                    <EventsChart
+                        data={chartData}
+                        statusOptions={statusOptions}
+                        currentStatusFilter={currentStatusFilter}
+                    />
                 </div>
             </div>
         </AppLayout>
