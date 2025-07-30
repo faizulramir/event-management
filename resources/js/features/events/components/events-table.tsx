@@ -122,6 +122,20 @@ export default function EventsTable({
     }
   };
 
+  // Helper function to safely render HTML content
+  const renderHtmlContent = (htmlContent: string) => {
+    // Strip HTML tags for preview or render safely
+    const stripHtml = (html: string) => {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || '';
+    };
+
+    // For table display, we'll show plain text version with line clamp
+    // For full view, we could render HTML safely
+    return stripHtml(htmlContent);
+  };
+
   const columns: ColumnConfig<Event>[] = [
     {
       key: 'title',
@@ -131,7 +145,7 @@ export default function EventsTable({
           <div className="font-medium truncate">{event.title}</div>
           {event.description && (
             <div className="text-sm text-muted-foreground line-clamp-2 mt-1">
-              {event.description}
+              {renderHtmlContent(event.description)}
             </div>
           )}
         </div>
@@ -217,7 +231,7 @@ export default function EventsTable({
       <div className="space-y-2 text-sm">
         {event.description && (
           <div className="text-muted-foreground line-clamp-2">
-            {event.description}
+            {renderHtmlContent(event.description)}
           </div>
         )}
         <div className="flex justify-between">

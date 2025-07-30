@@ -1,4 +1,3 @@
-import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -106,7 +105,10 @@ export default function EventShowPage({ event }: EventShowPageProps) {
                                 </CardHeader>
                                 <CardContent>
                                     {event.description ? (
-                                        <p className="text-gray-700 whitespace-pre-wrap">{event.description}</p>
+                                        <div
+                                            className="text-gray-700 prose prose-sm max-w-none"
+                                            dangerouslySetInnerHTML={{ __html: event.description }}
+                                        />
                                     ) : (
                                         <p className="text-gray-500 italic">No description provided</p>
                                     )}

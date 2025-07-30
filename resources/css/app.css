@@ -138,4 +138,89 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    /* Froala Editor Custom Styles */
+    .froala-editor-wrapper {
+        @apply rounded-md border border-input bg-background;
+    }
+
+    .froala-editor-wrapper.border-destructive {
+        @apply border-destructive;
+    }
+
+    /* Customize Froala editor to match our design system */
+    .fr-box {
+        @apply rounded-md border-0 shadow-none;
+    }
+
+    .fr-toolbar {
+        @apply border-b border-border bg-muted/50 rounded-t-md;
+    }
+
+    .fr-second-toolbar {
+        @apply border-b border-border bg-muted/30;
+    }
+
+    .fr-wrapper {
+        @apply bg-background;
+    }
+
+    .fr-element {
+        @apply text-foreground bg-background min-h-[150px] p-3;
+        font-family: inherit;
+    }
+
+    .fr-element:focus {
+        @apply outline-none ring-2 ring-ring ring-offset-2;
+    }
+
+    /* Toolbar button styling */
+    .fr-btn {
+        @apply text-foreground hover:bg-accent hover:text-accent-foreground;
+    }
+
+    .fr-btn.fr-active {
+        @apply bg-accent text-accent-foreground;
+    }
+
+    /* Dropdown styling */
+    .fr-dropdown-menu {
+        @apply bg-popover border border-border rounded-md shadow-md;
+    }
+
+    .fr-dropdown-menu .fr-dropdown-wrapper {
+        @apply bg-popover;
+    }
+
+    .fr-dropdown-menu .fr-dropdown-content {
+        @apply text-popover-foreground;
+    }
+
+    /* Popup styling */
+    .fr-popup {
+        @apply bg-popover border border-border rounded-md shadow-lg;
+    }
+
+    .fr-popup .fr-input-line input {
+        @apply bg-background border border-input text-foreground rounded-md px-3 py-2;
+    }
+
+    .fr-popup .fr-input-line input:focus {
+        @apply outline-none ring-2 ring-ring ring-offset-2;
+    }
+
+    /* Character counter */
+    .fr-counter {
+        @apply text-muted-foreground text-xs;
+    }
+
+    /* Placeholder text */
+    .fr-placeholder {
+        @apply text-muted-foreground;
+    }
+
+    /* Remove Froala branding if using GPL license */
+    .fr-box .fr-counter {
+        @apply text-right;
+    }
 }

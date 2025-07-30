@@ -1,4 +1,3 @@
-import React from 'react';
 import { Head, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import Heading from '@/components/heading';

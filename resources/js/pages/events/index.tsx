@@ -1,9 +1,8 @@
-import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
-import type { PaginatedEvents, Event, EventFilters } from '@/features/events/types';
+import type { PaginatedEvents, EventFilters } from '@/features/events/types';
 import AppLayout from '@/layouts/app-layout';
 import Heading from '@/components/heading';
 import EventsTable from '@/features/events/components/events-table';
@@ -11,18 +10,9 @@ import EventsTable from '@/features/events/components/events-table';
 interface EventsPageProps {
     events: PaginatedEvents;
     filters: EventFilters;
-    statusOptions: Record<string, string>;
 }
 
-export default function EventsPage({ events, filters, statusOptions }: EventsPageProps) {
-    const handleEdit = (event: Event) => {
-        window.location.href = route('events.edit', event.uuid);
-    };
-
-    const handleView = (event: Event) => {
-        window.location.href = route('events.show', event.uuid);
-    };
-
+export default function EventsPage({ events, filters }: EventsPageProps) {
     const breadcrumbs = [
         { title: 'Dashboard', href: route('dashboard') },
         { title: 'Events', href: route('events.index') },
@@ -51,13 +41,9 @@ export default function EventsPage({ events, filters, statusOptions }: EventsPag
                             <EventsTable
                                 events={events}
                                 filters={filters}
-                                onEdit={handleEdit}
-                                onView={handleView}
                             />
                         </CardContent>
                     </Card>
-
-
                 </div>
             </AppLayout>
         </>

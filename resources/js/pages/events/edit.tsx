@@ -1,4 +1,3 @@
-import React from 'react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import Heading from '@/components/heading';
@@ -33,9 +32,6 @@ export default function EditEventPage({ event, statusOptions }: EditEventPagePro
                         event={event}
                         statusOptions={statusOptions}
                         backUrl={route('events.show', event.uuid)}
-                        onSuccess={() => {
-                            window.location.href = route('events.show', event.uuid);
-                        }}
                     />
                 </div>
             </AppLayout>

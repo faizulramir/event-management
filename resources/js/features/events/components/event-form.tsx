@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useForm, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FroalaEditor } from '@/components/froala-editor';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import {
     Select,
@@ -29,11 +29,11 @@ interface EventFormProps {
     description?: string;
 }
 
-export default function EventForm({ 
-    mode, 
-    event, 
-    statusOptions, 
-    onSuccess, 
+export default function EventForm({
+    mode,
+    event,
+    statusOptions,
+    onSuccess,
     onCancel,
     backUrl,
     title,
@@ -47,7 +47,7 @@ export default function EventForm({
         if (isEdit && event) {
             const startDate = new Date(event.start_date);
             const endDate = new Date(event.end_date);
-            
+
             return {
                 title: event.title,
                 description: event.description || '',
@@ -59,7 +59,7 @@ export default function EventForm({
                 status: event.status as 'draft' | 'active' | 'cancelled' | 'completed',
             };
         }
-        
+
         return {
             title: '',
             description: '',
@@ -79,7 +79,7 @@ export default function EventForm({
         if (isEdit && event) {
             const startDate = new Date(event.start_date);
             const endDate = new Date(event.end_date);
-            
+
             setData({
                 title: event.title,
                 description: event.description || '',
@@ -198,16 +198,15 @@ export default function EventForm({
                     {/* Description */}
                     <div className="space-y-2">
                         <Label htmlFor="description">Description</Label>
-                        <Textarea
-                            id="description"
+                        <FroalaEditor
                             value={data.description}
-                            onChange={(e) => {
-                                setData('description', e.target.value);
+                            onChange={(content) => {
+                                setData('description', content);
                                 clearFieldError('description');
                             }}
-                            className={validationErrors.description || errors.description ? 'border-destructive' : ''}
                             placeholder="Enter event description"
-                            rows={4}
+                            error={!!(validationErrors.description || errors.description)}
+                            height={200}
                         />
                         {validationErrors.description && (
                             <p className="text-sm text-destructive">{validationErrors.description[0]}</p>
