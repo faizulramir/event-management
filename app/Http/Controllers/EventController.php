@@ -32,6 +32,11 @@ class EventController extends Controller implements HasMiddleware
     {
         $events = Event::query()
             ->with('user')
+            // Filter events based on user role
+            ->when(!auth()->user()->hasRole('admin'), function ($query) {
+                // If user is not admin, only show their own events
+                $query->where('user_id', auth()->id());
+            })
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('title', 'like', "%{$search}%")
