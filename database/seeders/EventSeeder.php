@@ -16,7 +16,7 @@ class EventSeeder extends Seeder
     {
         // Get existing users or create some if none exist
         $users = User::all();
-        
+
         if ($users->isEmpty()) {
             $users = User::factory(5)->create();
         }
@@ -25,7 +25,7 @@ class EventSeeder extends Seeder
         foreach ($users as $user) {
             // Create 2-4 events per user
             $eventCount = rand(2, 4);
-            
+            $user->assignRole('user');
             Event::factory($eventCount)
                 ->for($user)
                 ->create();
