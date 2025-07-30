@@ -604,85 +604,133 @@ export default function DataTable<T extends Record<string, any>>({
 
                     {/* Pagination Controls */}
                     <div className="flex items-center justify-center gap-1">
-                        <Link
-                            href={`?${new URLSearchParams({
-                                ...getCurrentUrlParams(),
-                                page: "1",
-                            }).toString()}`}
-                            preserveState
-                            preserveScroll
-                        >
+                        {pagination.current_page === 1 ? (
                             <Button
                                 variant="outline"
                                 size="icon"
                                 className="h-8 w-8 bg-transparent"
-                                disabled={pagination.current_page === 1}
+                                disabled={true}
                                 aria-label="Go to first page"
                             >
                                 <span className="sr-only">Go to first page</span>
                                 <ChevronsLeft className="h-4 w-4" />
                             </Button>
-                        </Link>
+                        ) : (
+                            <Link
+                                href={`?${new URLSearchParams({
+                                    ...getCurrentUrlParams(),
+                                    page: "1",
+                                }).toString()}`}
+                                preserveState
+                                preserveScroll
+                            >
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-8 w-8 bg-transparent"
+                                    aria-label="Go to first page"
+                                >
+                                    <span className="sr-only">Go to first page</span>
+                                    <ChevronsLeft className="h-4 w-4" />
+                                </Button>
+                            </Link>
+                        )}
 
-                        <Link
-                            href={`?${new URLSearchParams({
-                                ...getCurrentUrlParams(),
-                                page: String(pagination.current_page - 1),
-                            }).toString()}`}
-                            preserveState
-                            preserveScroll
-                        >
+                        {pagination.current_page === 1 ? (
                             <Button
                                 variant="outline"
                                 size="icon"
                                 className="h-8 w-8 bg-transparent"
-                                disabled={pagination.current_page === 1}
+                                disabled={true}
                                 aria-label="Go to previous page"
                             >
                                 <span className="sr-only">Go to previous page</span>
                                 <ChevronLeft className="h-4 w-4" />
                             </Button>
-                        </Link>
+                        ) : (
+                            <Link
+                                href={`?${new URLSearchParams({
+                                    ...getCurrentUrlParams(),
+                                    page: String(pagination.current_page - 1),
+                                }).toString()}`}
+                                preserveState
+                                preserveScroll
+                            >
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-8 w-8 bg-transparent"
+                                    aria-label="Go to previous page"
+                                >
+                                    <span className="sr-only">Go to previous page</span>
+                                    <ChevronLeft className="h-4 w-4" />
+                                </Button>
+                            </Link>
+                        )}
 
-                        <Link
-                            href={`?${new URLSearchParams({
-                                ...getCurrentUrlParams(),
-                                page: String(pagination.current_page + 1),
-                            }).toString()}`}
-                            preserveState
-                            preserveScroll
-                        >
+                        {pagination.current_page === pagination.last_page ? (
                             <Button
                                 variant="outline"
                                 size="icon"
                                 className="h-8 w-8 bg-transparent"
-                                disabled={pagination.current_page === pagination.last_page}
+                                disabled={true}
                                 aria-label="Go to next page"
                             >
                                 <span className="sr-only">Go to next page</span>
                                 <ChevronRight className="h-4 w-4" />
                             </Button>
-                        </Link>
+                        ) : (
+                            <Link
+                                href={`?${new URLSearchParams({
+                                    ...getCurrentUrlParams(),
+                                    page: String(pagination.current_page + 1),
+                                }).toString()}`}
+                                preserveState
+                                preserveScroll
+                            >
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-8 w-8 bg-transparent"
+                                    aria-label="Go to next page"
+                                >
+                                    <span className="sr-only">Go to next page</span>
+                                    <ChevronRight className="h-4 w-4" />
+                                </Button>
+                            </Link>
+                        )}
 
-                        <Link
-                            href={`?${new URLSearchParams({
-                                ...getCurrentUrlParams(),
-                                page: String(pagination.last_page),
-                            }).toString()}`}
-                            preserveState
-                            preserveScroll
-                        >
+                        {pagination.current_page === pagination.last_page ? (
                             <Button
                                 variant="outline"
                                 size="icon"
                                 className="h-8 w-8 bg-transparent"
-                                disabled={pagination.current_page === pagination.last_page}
+                                disabled={true}
                                 aria-label="Go to last page"
                             >
                                 <span className="sr-only">Go to last page</span>
                                 <ChevronsRight className="h-4 w-4" />
                             </Button>
-                        </Link>
+                        ) : (
+                            <Link
+                                href={`?${new URLSearchParams({
+                                    ...getCurrentUrlParams(),
+                                    page: String(pagination.last_page),
+                                }).toString()}`}
+                                preserveState
+                                preserveScroll
+                            >
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-8 w-8 bg-transparent"
+                                    aria-label="Go to last page"
+                                >
+                                    <span className="sr-only">Go to last page</span>
+                                    <ChevronsRight className="h-4 w-4" />
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
