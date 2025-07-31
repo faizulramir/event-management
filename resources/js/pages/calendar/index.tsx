@@ -7,7 +7,6 @@ import { CalendarEvent } from '@/features/calendar/types';
 
 interface CalendarIndexProps {
     events: Array<Omit<CalendarEvent, 'start' | 'end'> & { start: string; end: string }>;
-    canCreateEvents: boolean;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -17,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function CalendarIndex({ events, canCreateEvents }: CalendarIndexProps) {
+export default function CalendarIndex({ events }: CalendarIndexProps) {
     // Convert string dates to Date objects for react-big-calendar
     const calendarEvents: CalendarEvent[] = events.map(event => ({
         ...event,
@@ -29,7 +28,7 @@ export default function CalendarIndex({ events, canCreateEvents }: CalendarIndex
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Calendar" />
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-6">
-                <EventCalendar events={calendarEvents} canCreateEvents={canCreateEvents} />
+                <EventCalendar events={calendarEvents} />
             </div>
         </AppLayout>
     );

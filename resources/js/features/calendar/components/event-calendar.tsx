@@ -26,7 +26,6 @@ const localizer = dateFnsLocalizer({
 
 interface EventCalendarProps {
     events: CalendarEvent[];
-    canCreateEvents: boolean;
 }
 
 const statusColors = {
@@ -36,7 +35,7 @@ const statusColors = {
     completed: 'bg-blue-100 text-blue-800',
 };
 
-export default function EventCalendar({ events, canCreateEvents }: EventCalendarProps) {
+export default function EventCalendar({ events }: EventCalendarProps) {
     const [view, setView] = useState<View>(Views.MONTH);
     const [date, setDate] = useState(new Date());
     const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
@@ -52,17 +51,6 @@ export default function EventCalendar({ events, canCreateEvents }: EventCalendar
         setSelectedEvent(event);
     }, []);
 
-    const handleSelectSlot = useCallback(
-        ({ start, end }: { start: Date; end: Date }) => {
-            if (canCreateEvents) {
-                const startDate = format(start, 'yyyy-MM-dd HH:mm:ss');
-                const endDate = format(end, 'yyyy-MM-dd HH:mm:ss');
-                router.visit(`/events/create?start_date=${startDate}&end_date=${endDate}`);
-            }
-        },
-        [canCreateEvents]
-    );
-
     const handleNavigate = useCallback((newDate: Date) => {
         setDate(newDate);
     }, []);
@@ -73,7 +61,7 @@ export default function EventCalendar({ events, canCreateEvents }: EventCalendar
 
     const eventStyleGetter = (event: CalendarEvent) => {
         let backgroundColor = '#3174ad';
-        
+
         switch (event.status) {
             case 'published':
                 backgroundColor = '#10b981';
@@ -123,12 +111,6 @@ export default function EventCalendar({ events, canCreateEvents }: EventCalendar
                         View and manage your events in calendar format
                     </p>
                 </div>
-                {canCreateEvents && (
-                    <Button onClick={() => router.visit('/events/create')}>
-                        <CalendarDays className="h-4 w-4 mr-2" />
-                        Create Event
-                    </Button>
-                )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -147,8 +129,6 @@ export default function EventCalendar({ events, canCreateEvents }: EventCalendar
                                     onNavigate={handleNavigate}
                                     onView={handleViewChange}
                                     onSelectEvent={handleSelectEvent}
-                                    onSelectSlot={handleSelectSlot}
-                                    selectable={canCreateEvents}
                                     eventPropGetter={eventStyleGetter}
                                     components={{
                                         event: CustomEvent,
@@ -170,8 +150,8 @@ export default function EventCalendar({ events, canCreateEvents }: EventCalendar
                             <CardHeader>
                                 <CardTitle className="text-lg">{selectedEvent.title}</CardTitle>
                                 <div className="flex items-center gap-2">
-                                    <Badge 
-                                        variant="secondary" 
+                                    <Badge
+                                        variant="secondary"
                                         className={statusColors[selectedEvent.status as keyof typeof statusColors]}
                                     >
                                         {selectedEvent.status}
@@ -216,7 +196,7 @@ export default function EventCalendar({ events, canCreateEvents }: EventCalendar
                                 {selectedEvent.description && (
                                     <div>
                                         <h4 className="font-medium mb-2">Description</h4>
-                                        <div 
+                                        <div
                                             className="text-sm text-muted-foreground prose prose-sm max-w-none"
                                             dangerouslySetInnerHTML={{ __html: selectedEvent.description }}
                                         />
@@ -253,11 +233,6 @@ export default function EventCalendar({ events, canCreateEvents }: EventCalendar
                                 <p className="text-sm text-muted-foreground">
                                     Click on an event in the calendar to view its details
                                 </p>
-                                {canCreateEvents && (
-                                    <p className="text-sm text-muted-foreground mt-2">
-                                        Or click on an empty slot to create a new event
-                                    </p>
-                                )}
                             </CardContent>
                         </Card>
                     )}

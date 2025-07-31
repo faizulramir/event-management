@@ -14,18 +14,18 @@ class CalendarController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        
+
         // Build the query based on user role
         $query = Event::query();
-        
+
         // If user is not admin, only show their events and public events
         if (!$user->hasRole('admin')) {
             $query->where(function ($q) use ($user) {
                 $q->where('user_id', $user->id)
-                  ->orWhere('is_public', true);
+                    ->orWhere('is_public', true);
             });
         }
-        
+
         // Get events with user relationship
         $events = $query->with('user:id,name')
             ->select([
@@ -43,7 +43,7 @@ class CalendarController extends Controller
             ])
             ->orderBy('start_date')
             ->get();
-        
+
         // Transform events for react-big-calendar format
         $calendarEvents = $events->map(function ($event) {
             return [
@@ -61,10 +61,9 @@ class CalendarController extends Controller
                 'is_owner' => $event->user_id === auth()->id(),
             ];
         });
-        
+
         return Inertia::render('calendar/index', [
-            'events' => $calendarEvents,
-            'canCreateEvents' => $user->can('create', Event::class),
+            'events' => $calendarEvents
         ]);
     }
 }

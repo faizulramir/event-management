@@ -26,6 +26,8 @@ class RolePermissionSeeder extends Seeder
             ]
         );
 
+        $factoryUsers = User::factory(5)->create();
+
         $permissions = [
             'can:view:audit',
             'can:view:permission',
@@ -67,6 +69,11 @@ class RolePermissionSeeder extends Seeder
                     'can:delete:event',
                 ];
                 $r->syncPermissions($userPermissions);
+                
+                // Assign 'user' role to all factory-created users
+                foreach ($factoryUsers as $factoryUser) {
+                    $factoryUser->assignRole('user');
+                }
             }
         }
     }

@@ -16,16 +16,27 @@ class EventSeeder extends Seeder
     {
         // Get existing users or create some if none exist
         $users = User::all();
-
+        
         if ($users->isEmpty()) {
+            echo "No users found, creating 5 users with 'user' role...\n";
             $users = User::factory(5)->create();
+            
+            // Assign 'user' role to newly created users
+            foreach ($users as $user) {
+                $user->assignRole('user');
+            }
         }
 
         // Create a variety of events
         foreach ($users as $user) {
             // Create 2-4 events per user
             $eventCount = rand(2, 4);
-            $user->assignRole('user');
+
+            // Assign 'user' role if user doesn't have any roles
+            if (!$user->hasAnyRole()) {
+                $user->assignRole('user');
+            }
+
             Event::factory($eventCount)
                 ->for($user)
                 ->create();
@@ -74,14 +85,22 @@ class EventSeeder extends Seeder
                 ]);
         }
 
-        // Create some past events
-        Event::factory(10)
-            ->past()
-            ->public()
-            ->create();
+        // Create some past events using existing users
+        $randomUsers = User::inRandomOrder()->limit(10)->get();
+        foreach ($randomUsers as $user) {
+            Event::factory()
+                ->for($user)
+                ->past()
+                ->public()
+                ->create();
+        }
 
-        // Create some draft events
-        Event::factory(5)
-            ->create(['status' => 'draft']);
+        // Create some draft events using existing users
+        $draftUsers = User::inRandomOrder()->limit(5)->get();
+        foreach ($draftUsers as $user) {
+            Event::factory()
+                ->for($user)
+                ->create(['status' => 'draft']);
+        }
     }
 }
