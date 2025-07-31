@@ -2,10 +2,11 @@ import { Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Calendar, MapPin, Users, Clock, User, Globe, Lock } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, Clock, User, Globe, Lock, Edit, Trash2 } from 'lucide-react';
 import type { Event } from '@/features/events/types';
 import AppLayout from '@/layouts/app-layout';
 import Heading from '@/components/heading';
+import { formatDateLong, formatDateOnly, formatTimeOnly } from '@/lib/utils';
 
 interface EventShowPageProps {
     event: Event;
@@ -31,31 +32,6 @@ export default function EventShowPage({ event }: EventShowPageProps) {
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </Badge>
         );
-    };
-
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-    };
-
-    const formatDateOnly = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        });
-    };
-
-    const formatTimeOnly = (dateString: string) => {
-        return new Date(dateString).toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-        });
     };
 
     const isSameDay = new Date(event.start_date).toDateString() === new Date(event.end_date).toDateString();
@@ -141,11 +117,11 @@ export default function EventShowPage({ event }: EventShowPageProps) {
                                             <>
                                                 <div className="flex items-center space-x-2">
                                                     <span className="font-medium">Start:</span>
-                                                    <span>{formatDate(event.start_date)}</span>
+                                                    <span>{formatDateLong(event.start_date)}</span>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
                                                     <span className="font-medium">End:</span>
-                                                    <span>{formatDate(event.end_date)}</span>
+                                                    <span>{formatDateLong(event.end_date)}</span>
                                                 </div>
                                             </>
                                         )}

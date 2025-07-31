@@ -12,6 +12,7 @@ import DataTable, {
   type PaginationData,
 } from '@/components/data-table';
 import type { Event, PaginatedEvents } from '../types';
+import { formatDateRange, formatDate } from '@/lib/utils';
 
 interface EventsTableProps {
   events: PaginatedEvents;
@@ -87,39 +88,6 @@ export default function EventsTable({
         {isPublic ? 'Public' : 'Private'}
       </Badge>
     );
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const formatDateRange = (startDate: string, endDate: string) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    
-    if (start.toDateString() === end.toDateString()) {
-      // Same day
-      return `${start.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })} ${start.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-      })} - ${end.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-      })}`;
-    } else {
-      // Different days
-      return `${formatDate(startDate)} - ${formatDate(endDate)}`;
-    }
   };
 
   // Helper function to safely render HTML content
