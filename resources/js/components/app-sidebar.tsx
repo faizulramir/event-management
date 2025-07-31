@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Calendar, Folder, GroupIcon, Key, LayoutGrid, User } from 'lucide-react';
+import { BookOpen, Calendar, CalendarDays, Folder, GroupIcon, Key, LayoutGrid, User } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -17,6 +17,11 @@ const mainNavItems: NavItem[] = [
         title: 'Events',
         href: '/events',
         icon: Calendar,
+    },
+    {
+        title: 'Calendar',
+        href: '/calendar',
+        icon: CalendarDays,
     },
 ];
 
