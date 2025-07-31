@@ -313,7 +313,7 @@ export default function DataTable<T extends Record<string, any>>({
                             {mobileCardConfig.badge && mobileCardConfig.badge(item)}
                         </div>
                         {mobileCardConfig.subtitle && (
-                            <p className="text-sm text-muted-foreground">{mobileCardConfig.subtitle(item)}</p>
+                            <div className="text-sm text-muted-foreground">{mobileCardConfig.subtitle(item)}</div>
                         )}
                     </CardHeader>
                     <CardContent className="pt-0 space-y-4">
@@ -405,67 +405,65 @@ export default function DataTable<T extends Record<string, any>>({
         <div className={`space-y-4 ${className}`}>
             {/* Search and Filters */}
             {(searchConfig.enabled || filterConfigs.length > 0) && (
-                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="flex flex-1 flex-col gap-4 md:flex-row md:items-center">
-                        {/* Search Bar */}
-                        {searchConfig.enabled && (
-                            <div className="relative flex-1 md:max-w-sm">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    placeholder={defaultSearchPlaceholder}
-                                    value={searchValue}
-                                    onChange={handleSearchChange}
-                                    className="pl-10 pr-10"
-                                />
-                                {searchValue && (
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0 hover:bg-muted"
-                                        onClick={clearSearch}
-                                    >
-                                        <X className="h-3 w-3" />
-                                    </Button>
-                                )}
-                                {isSearching && (
-                                    <div className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-                                )}
-                            </div>
-                        )}
+                <div className="flex flex-col gap-4">
+                    {/* Search Bar */}
+                    {searchConfig.enabled && (
+                        <div className="relative w-full md:max-w-sm">
+                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                            <Input
+                                placeholder={defaultSearchPlaceholder}
+                                value={searchValue}
+                                onChange={handleSearchChange}
+                                className="pl-10 pr-10"
+                            />
+                            {searchValue && (
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0 hover:bg-muted"
+                                    onClick={clearSearch}
+                                >
+                                    <X className="h-3 w-3" />
+                                </Button>
+                            )}
+                            {isSearching && (
+                                <div className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+                            )}
+                        </div>
+                    )}
 
-                        {/* Filters */}
-                        {filterConfigs.length > 0 && (
-                            <div className="flex gap-2 flex-wrap">
-                                {filterConfigs.map((filterConfig) => (
-                                    <Select
-                                        key={filterConfig.key}
-                                        value={currentUrlParams[filterConfig.key] || filters[filterConfig.key] || "all"}
-                                        onValueChange={(value) => handleFilterChange(filterConfig.key, value)}
-                                        disabled={filterConfig.disabled}
-                                    >
-                                        <SelectTrigger className="w-[140px]">
-                                            <SelectValue placeholder={filterConfig.placeholder || filterConfig.label} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="all">All {filterConfig.label}</SelectItem>
-                                            {filterConfig.options.map((option) => (
-                                                <SelectItem key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                ))}
+                    {/* Filters */}
+                    {filterConfigs.length > 0 && (
+                        <div className="flex flex-col gap-2 md:flex-row md:flex-wrap">
+                            {filterConfigs.map((filterConfig) => (
+                                <Select
+                                    key={filterConfig.key}
+                                    value={currentUrlParams[filterConfig.key] || filters[filterConfig.key] || "all"}
+                                    onValueChange={(value) => handleFilterChange(filterConfig.key, value)}
+                                    disabled={filterConfig.disabled}
+                                >
+                                    <SelectTrigger className="w-full md:w-[140px]">
+                                        <SelectValue placeholder={filterConfig.placeholder || filterConfig.label} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All {filterConfig.label}</SelectItem>
+                                        {filterConfig.options.map((option) => (
+                                            <SelectItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            ))}
 
-                                {hasActiveFilters && (
-                                    <Button variant="ghost" onClick={clearFilters} className="h-10 px-2 lg:px-3">
-                                        Clear
-                                        <X className="ml-2 h-4 w-4" />
-                                    </Button>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                            {hasActiveFilters && (
+                                <Button variant="ghost" onClick={clearFilters} className="h-10 px-2 lg:px-3 w-full md:w-auto">
+                                    Clear
+                                    <X className="ml-2 h-4 w-4" />
+                                </Button>
+                            )}
+                        </div>
+                    )}
                 </div>
             )}
 

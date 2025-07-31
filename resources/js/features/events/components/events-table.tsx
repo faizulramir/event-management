@@ -21,11 +21,11 @@ interface EventsTableProps {
   onView?: (event: Event) => void;
 }
 
-export default function EventsTable({ 
-  events, 
+export default function EventsTable({
+  events,
   filters = {},
   onEdit,
-  onView 
+  onView
 }: EventsTableProps) {
   const { showConfirmation, ConfirmationDialog } = useConfirmationDialog();
 
@@ -183,15 +183,17 @@ export default function EventsTable({
 
   const mobileCardConfig: MobileCardConfig<Event> = {
     title: (event) => (
-      <div className="flex items-center justify-between">
-        <span className="font-medium truncate">{event.title}</span>
-        {getStatusBadge(event.status)}
-      </div>
+      <span className="font-medium block">{event.title}</span>
     ),
     subtitle: (event) => (
-      <div className="flex items-center space-x-1 text-muted-foreground">
-        <Calendar className="h-3 w-3" />
-        <span className="text-xs">{formatDate(event.start_date)}</span>
+      <div className="space-y-2">
+        <div className="flex items-center space-x-1 text-muted-foreground">
+          <Calendar className="h-3 w-3" />
+          <span className="text-xs">{formatDate(event.start_date)}</span>
+        </div>
+        <div>
+          {getStatusBadge(event.status)}
+        </div>
       </div>
     ),
     badge: (event) => getVisibilityBadge(event.is_public),
