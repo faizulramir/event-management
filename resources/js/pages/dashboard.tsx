@@ -23,6 +23,8 @@ interface DashboardProps {
     chartData: ChartDataPoint[];
     statusOptions: Record<string, string>;
     currentStatusFilter?: string;
+    periodOptions: Array<{ value: string; label: string }>;
+    currentPeriod: string;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -36,14 +38,16 @@ export default function Dashboard({
     stats, 
     chartData, 
     statusOptions, 
-    currentStatusFilter 
+    currentStatusFilter,
+    periodOptions,
+    currentPeriod
 }: DashboardProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-6">
+            <div className="flex h-screen flex-1 flex-col gap-6 rounded-xl p-6">
                 {/* Stats Cards */}
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-4 md:grid-cols-3 flex-shrink-0">
                     <StatsCard
                         title="Total Events"
                         value={stats.totalEvents}
@@ -65,11 +69,13 @@ export default function Dashboard({
                 </div>
 
                 {/* Events Chart */}
-                <div className="flex-1">
+                <div className="flex-1 min-h-0">
                     <EventsChart
                         data={chartData}
                         statusOptions={statusOptions}
                         currentStatusFilter={currentStatusFilter}
+                        periodOptions={periodOptions}
+                        currentPeriod={currentPeriod}
                     />
                 </div>
             </div>
