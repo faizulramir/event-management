@@ -2,6 +2,8 @@ import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
+import { RecaptchaButton } from '@/components/recaptcha-button';
+
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -18,18 +20,29 @@ type LoginForm = {
 
 interface LoginProps {
     status?: string;
+    error?: string;
     canResetPassword: boolean;
 }
 
-export default function Login({ status, canResetPassword }: LoginProps) {
-    const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
+export default function Login({ status, error, canResetPassword }: LoginProps) {
+    const { data, setData, post, processing, errors, reset, setError } = useForm<Required<LoginForm & { recaptcha: boolean }>>({
         email: '',
         password: '',
         remember: false,
+        recaptcha: false,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+
+        // Check if reCAPTCHA is verified
+        if (!data.recaptcha) {
+            // Set a custom error for recaptcha
+            setError('recaptcha', 'Please verify that you are not a robot');
+            return; // Stop form submission
+        }
+
+        // If reCAPTCHA is verified, proceed with form submission
         post(route('login'), {
             onFinish: () => reset('password'),
         });
@@ -90,13 +103,27 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
 
+                    <div className="grid gap-2">
+                        <Label htmlFor="recaptcha">Verify you're not a robot</Label>
+                        <RecaptchaButton onVerify={(verified) => {
+                            console.log(verified)
+                            if (verified) {
+                                setData('recaptcha', true);
+                                setError('recaptcha', '');
+                            } else {
+                                setError('recaptcha', 'Please verify that you are not a robot');
+                            }
+                        }} />
+                        <InputError message={errors.recaptcha} />
+                    </div>
+
                     <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
                 </div>
 
-                <div className="text-center text-sm text-muted-foreground">
+                <div className="text-muted-foreground text-center text-sm">
                     Don't have an account?{' '}
                     <TextLink href={route('register')} tabIndex={5}>
                         Sign up
@@ -105,6 +132,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             </form>
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+            {error && <div className="mb-4 text-center text-sm font-medium text-red-600">{error}</div>}
         </AuthLayout>
     );
 }

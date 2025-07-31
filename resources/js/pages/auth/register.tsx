@@ -2,6 +2,8 @@ import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
+import { RecaptchaButton } from '@/components/recaptcha-button';
+
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -17,15 +19,25 @@ type RegisterForm = {
 };
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
+    const { data, setData, post, processing, errors, reset, setError } = useForm<Required<RegisterForm & { recaptcha: boolean }>>({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
+        recaptcha: false,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+
+        // Check if reCAPTCHA is verified
+        if (!data.recaptcha) {
+            // Set a custom error for recaptcha
+            setError('recaptcha', 'Please verify that you are not a robot');
+            return; // Stop form submission
+        }
+
+        // If reCAPTCHA is verified, proceed with form submission
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
@@ -101,7 +113,21 @@ export default function Register() {
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
+                    <div className="grid gap-2">
+                        <Label htmlFor="recaptcha">Verify you're not a robot</Label>
+                        <RecaptchaButton onVerify={(verified) => {
+                            console.log(verified)
+                            if (verified) {
+                                setData('recaptcha', true);
+                                setError('recaptcha', '');
+                            } else {
+                                setError('recaptcha', 'Please verify that you are not a robot');
+                            }
+                        }} />
+                        <InputError message={errors.recaptcha} />
+                    </div>
+
+                    <Button type="submit" className="mt-4 w-full" tabIndex={6} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Create account
                     </Button>
@@ -109,7 +135,7 @@ export default function Register() {
 
                 <div className="text-center text-sm text-muted-foreground">
                     Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
+                    <TextLink href={route('login')} tabIndex={7}>
                         Log in
                     </TextLink>
                 </div>

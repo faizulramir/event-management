@@ -108,7 +108,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 <div>
                     <h1 className="text-2xl font-bold">Event Calendar</h1>
                     <p className="text-muted-foreground">
-                        View and manage your events in calendar format
+                        View all public and self events in calendar format
                     </p>
                 </div>
             </div>

@@ -225,3 +225,7 @@
         @apply text-right;
     }
 }
+
+.grecaptcha-badge {
+    visibility: hidden;
+}
