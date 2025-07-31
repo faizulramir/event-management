@@ -8,6 +8,7 @@ import { Calendar, MapPin, Users, Search, Clock, X } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { SharedData } from '@/types';
 import { formatDateRange } from '@/lib/utils';
+import { EventDetailsModal } from '@/components/event-details-modal';
 
 interface WelcomeProps {
     events: PaginatedEvents;
@@ -18,6 +19,8 @@ export default function Welcome({ events, search = '' }: WelcomeProps) {
     const { auth } = usePage<SharedData>().props;
     const [searchValue, setSearchValue] = useState(search);
     const [isSearching, setIsSearching] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const previousSearchRef = useRef<string>(search);
 
@@ -97,6 +100,16 @@ export default function Welcome({ events, search = '' }: WelcomeProps) {
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </Badge>
         );
+    };
+
+    const handleViewDetails = (event: Event) => {
+        setSelectedEvent(event);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedEvent(null);
     };
 
     return (
@@ -196,7 +209,11 @@ export default function Welcome({ events, search = '' }: WelcomeProps) {
                                 {/* Events Grid */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                                     {events.data.map((event) => (
-                                        <Card key={event.uuid} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md hover:shadow-xl hover:-translate-y-1 flex flex-col h-full">
+                                        <Card 
+                                            key={event.uuid} 
+                                            className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md hover:shadow-xl hover:-translate-y-1 flex flex-col h-full cursor-pointer"
+                                            onClick={() => handleViewDetails(event)}
+                                        >
                                             <CardHeader className="pb-3">
                                                 <div className="flex justify-between items-start mb-2">
                                                     <CardTitle className="text-lg font-semibold line-clamp-2 group-hover:text-blue-600 transition-colors">
@@ -239,7 +256,10 @@ export default function Welcome({ events, search = '' }: WelcomeProps) {
                                                 <Button
                                                     variant="outline"
                                                     className="w-full group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all mt-auto"
-                                                    onClick={() => router.visit(route('events.show', event.uuid))}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleViewDetails(event);
+                                                    }}
                                                 >
                                                     View Details
                                                 </Button>
@@ -299,6 +319,13 @@ export default function Welcome({ events, search = '' }: WelcomeProps) {
                     </div>
                 </footer>
             </div>
+
+            {/* Event Details Modal */}
+            <EventDetailsModal
+                event={selectedEvent}
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+            />
         </>
     );
 }
